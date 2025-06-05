@@ -21,7 +21,7 @@ import static org.springframework.http.HttpStatus.*;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("${api.prefix}/images")
+@RequestMapping("/images")
 public class ImageController {
     private final IImageService imageService;
 
@@ -35,7 +35,7 @@ public class ImageController {
         }
     }
 
-    @GetMapping("/image/download/id/{imageId}")
+    @GetMapping("/download/{imageId}")
     public ResponseEntity<Resource> downloadImage(@PathVariable Long imageId) throws SQLException {
         Image image = imageService.getImageById(imageId);
         ByteArrayResource resource = new ByteArrayResource(image.getImage().getBytes(1, (int) image.getImage().length()));
@@ -44,7 +44,7 @@ public class ImageController {
                 .body(resource);
     }
 
-    @PutMapping("/image/update/id/{imageId}")
+    @PutMapping("/{imageId}")
     public ResponseEntity<ApiResponse> updateImage(@PathVariable Long imageId, @RequestBody MultipartFile file) {
         try {
             Image image = imageService.getImageById(imageId);
@@ -58,7 +58,7 @@ public class ImageController {
         return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse("Update failed", INTERNAL_SERVER_ERROR));
     }
 
-    @DeleteMapping("/image/delete/id/{imageId}")
+    @DeleteMapping("/{imageId}")
     public ResponseEntity<ApiResponse> deleteImage(@PathVariable Long imageId) {
         try {
             Image image = imageService.getImageById(imageId);
