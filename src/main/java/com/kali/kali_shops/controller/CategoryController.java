@@ -16,11 +16,11 @@ import static org.springframework.http.HttpStatus.*;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("{api.prefix}/categories")
+@RequestMapping("/categories")
 public class CategoryController {
     private final ICategoryService categoryService;
 
-    @GetMapping("/all")
+    @GetMapping
     public ResponseEntity<ApiResponse> getAllCategories() {
         try {
             List<Category> categoryList = categoryService.getAllCategories();
@@ -30,7 +30,7 @@ public class CategoryController {
         }
     }
 
-    @PostMapping("/add")
+    @PostMapping
     public ResponseEntity<ApiResponse> addCategory(@RequestBody Category name) {
         try {
             Category category = categoryService.addCategory(name);
@@ -40,7 +40,7 @@ public class CategoryController {
         }
     }
 
-    @GetMapping("/category/id/{categoryId}")
+    @GetMapping("/{categoryId}")
     public ResponseEntity<ApiResponse> getCategoryById(@PathVariable Long categoryId) {
         try {
             Category category = categoryService.getCategoryById(categoryId);
@@ -50,7 +50,7 @@ public class CategoryController {
         }
     }
 
-    @GetMapping("/category/name/{name}")
+    @GetMapping("/category/{name}")
     public ResponseEntity<ApiResponse> getCategoryByName(@PathVariable String name) {
         try {
             Category category = categoryService.getCategoryByName(name);
@@ -60,7 +60,7 @@ public class CategoryController {
         }
     }
 
-    @DeleteMapping("/category/delete/id/{categoryId}")
+    @DeleteMapping("/{categoryId}")
     public ResponseEntity<ApiResponse> deleteCategory(@PathVariable Long categoryId) {
         try {
             categoryService.deleteCategoryById(categoryId);
@@ -70,7 +70,7 @@ public class CategoryController {
         }
     }
 
-    @PutMapping("/category/update/id/{categoryId}")
+    @PutMapping("/{categoryId}")
     public ResponseEntity<ApiResponse> updateCategory(@PathVariable Long categoryId, @RequestBody Category category) {
         try {
             Category updatedCategory = categoryService.updateCategory(categoryId, category);
