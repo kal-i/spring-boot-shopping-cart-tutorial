@@ -1,5 +1,6 @@
 package com.kali.kali_shops.service.product;
 
+import com.kali.kali_shops.dto.ProductDto;
 import com.kali.kali_shops.model.Product;
 import com.kali.kali_shops.request.AddProductRequest;
 import com.kali.kali_shops.request.UpdateProductRequest;
@@ -28,4 +29,8 @@ public interface IProductService {
     List<Product> getProductsByBrandAndName(String brand, String name);
 
     Long countProductsByBrandAndName(String brand, String name);
+
+    List<ProductDto> getConvertedProductDtos(List<Product> products);
+
+    ProductDto convertToDto(Product product);
 }
