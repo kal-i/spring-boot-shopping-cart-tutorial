@@ -1,5 +1,6 @@
 package com.kali.kali_shops.controller;
 
+import com.kali.kali_shops.dto.ProductDto;
 import com.kali.kali_shops.exceptions.ResourceNotFoundException;
 import com.kali.kali_shops.model.Product;
 import com.kali.kali_shops.request.AddProductRequest;
@@ -25,7 +26,8 @@ public class ProductController {
     public ResponseEntity<ApiResponse> getAllProducts() {
         try {
             List<Product> productList = productService.getAllProducts();
-            return ResponseEntity.ok(new ApiResponse("Success", productList));
+            List<ProductDto> productDtos = productService.getConvertedProductDtos(productList);
+            return ResponseEntity.ok(new ApiResponse("Success", productDtos));
         } catch (Exception e) {
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(), null));
         }
@@ -35,7 +37,8 @@ public class ProductController {
     public ResponseEntity<ApiResponse> getProductById(@PathVariable Long productId) {
         try {
             Product product = productService.getProductById(productId);
-            return ResponseEntity.ok(new ApiResponse("Success", product));
+            ProductDto productDto = productService.convertToDto(product);
+            return ResponseEntity.ok(new ApiResponse("Success", productDto));
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
         }
@@ -45,7 +48,8 @@ public class ProductController {
     public ResponseEntity<ApiResponse> addProduct(@RequestBody AddProductRequest addProductRequest) {
         try {
             Product addedProduct = productService.addProduct(addProductRequest);
-            return ResponseEntity.ok(new ApiResponse("Product added", addedProduct));
+            ProductDto productDto = productService.convertToDto(addedProduct);
+            return ResponseEntity.ok(new ApiResponse("Product added", productDto));
         } catch (Exception e) {
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(), null));
         }
@@ -55,7 +59,8 @@ public class ProductController {
     public ResponseEntity<ApiResponse> updateProduct(@PathVariable Long productId, @RequestBody UpdateProductRequest updateProductRequest) {
         try {
             Product updatedProduct = productService.updateProductById(productId, updateProductRequest);
-            return ResponseEntity.ok(new ApiResponse("Product updated", updatedProduct));
+            ProductDto productDto = productService.convertToDto(updatedProduct);
+            return ResponseEntity.ok(new ApiResponse("Product updated", productDto));
         } catch (ResourceNotFoundException e) {
             return  ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
         }
@@ -75,7 +80,8 @@ public class ProductController {
     public ResponseEntity<ApiResponse> getProductsByBrandAndName(@RequestParam String brandName, @RequestParam String productName) {
         try {
             List<Product> productList = productService.getProductsByBrandAndName(brandName, productName);
-            return ResponseEntity.ok(new ApiResponse("Success", productList));
+            List<ProductDto> productDtos = productService.getConvertedProductDtos(productList);
+            return ResponseEntity.ok(new ApiResponse("Success", productDtos));
         } catch (Exception e) {
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(), null));
         }
@@ -85,7 +91,8 @@ public class ProductController {
     public ResponseEntity<ApiResponse> getProductsByCategoryAndBrand(@RequestParam String categoryName, @RequestParam String brandName) {
         try {
             List<Product> productList = productService.getProductsByCategoryAndBrand(categoryName, brandName);
-            return ResponseEntity.ok(new ApiResponse("Success", productList));
+            List<ProductDto> productDtos = productService.getConvertedProductDtos(productList);
+            return ResponseEntity.ok(new ApiResponse("Success", productDtos));
         } catch (Exception e) {
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(), null));
         }
@@ -95,7 +102,8 @@ public class ProductController {
     public ResponseEntity<ApiResponse> getProductsByName(@PathVariable String name) {
         try {
             List<Product> productList = productService.getProductsByName(name);
-            return ResponseEntity.ok(new ApiResponse("Success", productList));
+            List<ProductDto> productDtos = productService.getConvertedProductDtos(productList);
+            return ResponseEntity.ok(new ApiResponse("Success", productDtos));
         } catch (Exception e) {
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(), null));
         }
@@ -105,7 +113,8 @@ public class ProductController {
     public ResponseEntity<ApiResponse> getProductsByBrand(@PathVariable String brand) {
         try {
             List<Product> productList = productService.getProductsByBrand(brand);
-            return ResponseEntity.ok(new ApiResponse("Success", productList));
+            List<ProductDto> productDtos = productService.getConvertedProductDtos(productList);
+            return ResponseEntity.ok(new ApiResponse("Success", productDtos));
         } catch (Exception e) {
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(), null));
         }
@@ -115,7 +124,8 @@ public class ProductController {
     public ResponseEntity<ApiResponse> getProductsByCategory(@PathVariable String category) {
         try {
             List<Product> productList = productService.getProductsByCategory(category);
-            return ResponseEntity.ok(new ApiResponse("Success", productList));
+            List<ProductDto> productDtos = productService.getConvertedProductDtos(productList);
+            return ResponseEntity.ok(new ApiResponse("Success", productDtos));
         } catch (Exception e) {
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(), null));
         }
