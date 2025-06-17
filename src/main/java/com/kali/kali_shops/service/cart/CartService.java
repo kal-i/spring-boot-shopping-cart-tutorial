@@ -2,9 +2,10 @@ package com.kali.kali_shops.service.cart;
 
 import com.kali.kali_shops.exceptions.ResourceNotFoundException;
 import com.kali.kali_shops.model.Cart;
-import com.kali.kali_shops.model.CartItem;
+
 import com.kali.kali_shops.repository.CartItemRepository;
 import com.kali.kali_shops.repository.CartRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +27,7 @@ public class CartService implements ICartService {
         return cartRepository.save(cart);
     }
 
+    @Transactional
     @Override
     public void clearCart(Long id) {
         Cart cart = getCartById(id);
@@ -38,5 +40,11 @@ public class CartService implements ICartService {
     public BigDecimal getTotalPrice(Long id) {
         Cart cart = getCartById(id);
         return cart.getTotalAmount();
+    }
+
+    @Override
+    public Long initializeNewCart() {
+        Cart cart = new Cart();
+        return cartRepository.save(cart).getId();
     }
 }
