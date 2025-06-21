@@ -2,6 +2,7 @@ package com.kali.kali_shops.service.product;
 
 import com.kali.kali_shops.dto.ImageDto;
 import com.kali.kali_shops.dto.ProductDto;
+import com.kali.kali_shops.exceptions.AlreadyExistsException;
 import com.kali.kali_shops.exceptions.ResourceNotFoundException;
 import com.kali.kali_shops.model.Category;
 import com.kali.kali_shops.model.Image;
@@ -28,6 +29,10 @@ public class ProductService implements IProductService {
 
     @Override
     public Product addProduct(AddProductRequest request) {
+        if (productExists(request.getName(), request.getBrand())) {
+            throw new AlreadyExistsException(request.getBrand() + " " + request.getName() + " already exists");
+        }
+
         Category category = Optional.ofNullable(categoryRepository.findByName(request.getCategory().getName()))
                 .orElseGet(() -> {
                     Category newCategory = new Category(request.getCategory().getName());
@@ -36,6 +41,10 @@ public class ProductService implements IProductService {
         request.setCategory(category);
 
         return productRepository.save(createProduct(request, category));
+    }
+
+    private boolean productExists(String name, String brand) {
+        return productRepository.existsByNameAndBrand(name, brand);
     }
 
     private Product createProduct(AddProductRequest request, Category category) {
