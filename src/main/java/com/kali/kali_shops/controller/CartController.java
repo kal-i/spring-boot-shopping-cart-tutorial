@@ -1,5 +1,6 @@
 package com.kali.kali_shops.controller;
 
+import com.kali.kali_shops.dto.CartDto;
 import com.kali.kali_shops.exceptions.ResourceNotFoundException;
 import com.kali.kali_shops.model.Cart;
 import com.kali.kali_shops.response.ApiResponse;
@@ -22,7 +23,8 @@ public class CartController {
     public ResponseEntity<ApiResponse> getCart(@PathVariable  Long cartId) {
         try {
             Cart cart = cartService.getCartById(cartId);
-            return ResponseEntity.ok(new ApiResponse("Success ", cart));
+            CartDto cartDto = cartService.convertToDto(cart);
+            return ResponseEntity.ok(new ApiResponse("Success ", cartDto));
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
         }
